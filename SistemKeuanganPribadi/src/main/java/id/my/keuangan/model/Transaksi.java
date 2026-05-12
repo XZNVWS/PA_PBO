@@ -93,7 +93,7 @@ public abstract class Transaksi implements ITransaksiable {
     @Override
     public void tampilkanDetail() {
         System.out.println("==============================================");
-        System.out.printf( "│ [%s] %s%n", getTipe(), getId());
+        System.out.printf( " [%s] %s%n", getTipe(), getId());
         System.out.println("==============================================");
         System.out.printf( " Deskripsi : %-28s %n", deskripsi);
         System.out.printf( " Kategori  : %-28s %n", kategori.getLabel());
