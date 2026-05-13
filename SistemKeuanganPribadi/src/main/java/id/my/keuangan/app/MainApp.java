@@ -74,7 +74,7 @@ public class MainApp {
         manager.tambahTransaksi(tagihan);       // Pengeluaran → Transaksi
         System.out.println();
         
-        System.out.println("── Detail Transaksi (override tampilkanDetail()) ──");
+        System.out.println("── Detail Transaksi ──");
         gaji.tampilkanDetail();
         tagihan.tampilkanDetail();
         
@@ -84,7 +84,7 @@ public class MainApp {
         laporan.tampilkanLaporanBulanan(Month.MAY, 2025);
         laporan.tampilkanPengeluaranPerKategori();
         System.out.println();
-        System.out.println("── Modul 4: getDampakSaldo() per transaksi ──");
+        System.out.println("── per transaksi ──");
         manager.getAllTransaksi().forEach(t ->
                 System.out.printf("  [%s] %-25s dampak saldo: Rp %,.0f%n",
                         t.getTipe(),
