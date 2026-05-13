@@ -12,13 +12,11 @@
     <packaging>jar</packaging>
 
     <name>Sistem Keuangan Pribadi</name>
-    <description>Aplikasi keuangan pribadi berbasis OOP Java (Modul 2-8)</description>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>  
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exec.mainClass>id.my.keuangan.app.MainApp</exec.mainClass>
+        <exec.mainClass>id.my.keuangan.app.MainApp</exec.mainClass>  
     </properties>
 
     <build>
