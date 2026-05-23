@@ -22,14 +22,15 @@ public class TransaksiManager {
         this.saldoAwal = 1000000;
 
         if (isDatabaseKosong()) {
-            this.tambahTransaksi(new Pemasukan(5000000, "Gaji Bulanan", Kategori.GAJI, "PT. Tekno"));
-            this.tambahTransaksi(new Pengeluaran(50000, "Makan Siang", Kategori.MAKANAN, "Tunai"));
+            System.out.println("Database kosong, memasukkan 2 data demo awal...");
+            this.tambahTransaksi(new Pemasukan(5000000, "Gaji Bulanan", Kategori.GAJI));
+            this.tambahTransaksi(new Pengeluaran(50000, "Makan Siang", Kategori.MAKANAN));
         } else {
+            System.out.println("Database terdeteksi berisi data, memuat data dari database...");
             loadDataDariDatabase();
         }
     }
 
-    // Method pembantu untuk mengecek apakah tabel transaksi di DB kosong
     private boolean isDatabaseKosong() {
         String query = "SELECT COUNT(*) FROM transaksi";
         try (Connection conn = Database.getConnection();
@@ -41,11 +42,10 @@ public class TransaksiManager {
         } catch (SQLException e) {
             System.err.println("Gagal mengecek isi database: " + e.getMessage());
         }
-        return false; // Default return false jika terjadi error koneksi agar aman
+        return false;
     }
 
     public void tambahTransaksi(Transaksi t) {
-        // VALIDASI ERROR HANDLING: Mencegah Saldo Minus
         if (t instanceof Pengeluaran) {
             if (hitungTotalSaldo() + t.getDampakSaldo() < 0) {
                 throw new IllegalArgumentException("Transaksi Ditolak! Sisa saldo tidak mencukupi untuk melakukan pengeluaran ini.");
@@ -54,8 +54,7 @@ public class TransaksiManager {
 
         listTransaksi.add(t);
 
-        // INSERT DATABASE MySQL
-        String sql = "INSERT INTO transaksi (id, jumlah, deskripsi, kategori, waktu, tipe, spesifik, catatan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO transaksi (id, jumlah, deskripsi, kategori, waktu, tipe) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -66,13 +65,6 @@ public class TransaksiManager {
             ps.setTimestamp(5, Timestamp.valueOf(t.getWaktu()));
             ps.setString(6, t.getTipe());
 
-            if (t instanceof Pemasukan) {
-                ps.setString(7, ((Pemasukan) t).getSumberPemasukan());
-                ps.setString(8, "");
-            } else {
-                ps.setString(7, ((Pengeluaran) t).getMetodePembayaran());
-                ps.setString(8, ((Pengeluaran) t).getCatatan());
-            }
             ps.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("Gagal menyimpan ke database: " + ex.getMessage());
@@ -80,14 +72,13 @@ public class TransaksiManager {
     }
 
     public void loadDataDariDatabase() {
-        // SORTING BY DATE/WAKTU KRONOLOGIS (Urut dari waktu terkuno ke terbaru)
         String query = "SELECT * FROM transaksi ORDER BY waktu ASC";
 
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
-            listTransaksi.clear(); // Bersihkan list lokal sebelum memuat dari DB
+            listTransaksi.clear();
             while (rs.next()) {
                 String id = rs.getString("id");
                 double jumlah = rs.getDouble("jumlah");
@@ -95,13 +86,11 @@ public class TransaksiManager {
                 Kategori kategori = Kategori.valueOf(rs.getString("kategori"));
                 LocalDateTime waktu = rs.getTimestamp("waktu").toLocalDateTime();
                 String tipe = rs.getString("tipe");
-                String spesifik = rs.getString("spesifik");
-                String catatan = rs.getString("catatan");
 
                 if ("PEMASUKAN".equalsIgnoreCase(tipe)) {
-                    listTransaksi.add(new Pemasukan(id, jumlah, deskripsi, kategori, waktu, spesifik));
+                    listTransaksi.add(new Pemasukan(id, jumlah, deskripsi, kategori, waktu));
                 } else {
-                    listTransaksi.add(new Pengeluaran(id, jumlah, deskripsi, kategori, waktu, spesifik, catatan));
+                    listTransaksi.add(new Pengeluaran(id, jumlah, deskripsi, kategori, waktu));
                 }
             }
         } catch (SQLException e) {
@@ -127,10 +116,6 @@ public class TransaksiManager {
 
     public double getTotalPengeluaran() {
         return listTransaksi.stream().filter(t -> t instanceof Pengeluaran).mapToDouble(Transaksi::getJumlah).sum();
-    }
-
-    public double getSaldoBersih() {
-        return getTotalPemasukan() - getTotalPengeluaran();
     }
 
     public int getJumlahTransaksi() {

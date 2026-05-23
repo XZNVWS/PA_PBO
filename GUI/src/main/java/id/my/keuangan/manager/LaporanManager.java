@@ -23,7 +23,6 @@ public class LaporanManager {
         sb.append("Total Transaksi  : ").append(transaksiManager.getJumlahTransaksi()).append(" data\n");
         sb.append("Total Pemasukan  : Rp ").append(String.format("%,.0f", transaksiManager.getTotalPemasukan())).append("\n");
         sb.append("Total Pengeluaran: Rp ").append(String.format("%,.0f", transaksiManager.getTotalPengeluaran())).append("\n");
-        sb.append("Saldo Bersih     : Rp ").append(String.format("%,.0f", transaksiManager.getSaldoBersih())).append("\n");
         sb.append("Total Saldo Akhir: Rp ").append(String.format("%,.0f", transaksiManager.hitungTotalSaldo())).append("\n");
         return sb.toString();
     }

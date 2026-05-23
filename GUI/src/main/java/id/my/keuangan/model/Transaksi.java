@@ -10,11 +10,10 @@ public abstract class Transaksi implements ITransaksiable {
     private double jumlah;
     private String deskripsi;
     private Kategori kategori;
-    private LocalDateTime waktu; // Ganti dari LocalDate ke LocalDateTime
+    private LocalDateTime waktu;
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    // Constructor untuk input baru dari GUI
     public Transaksi(double jumlah, String deskripsi, Kategori kategori) {
         this.id = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         setJumlah(jumlah);
@@ -23,7 +22,6 @@ public abstract class Transaksi implements ITransaksiable {
         this.waktu = LocalDateTime.now();
     }
 
-    // Constructor untuk memuat data dari Database (dengan ID dan Waktu aslinya)
     public Transaksi(String id, double jumlah, String deskripsi, Kategori kategori, LocalDateTime waktu) {
         this.id = id;
         setJumlah(jumlah);
@@ -33,8 +31,10 @@ public abstract class Transaksi implements ITransaksiable {
     }
 
     public String getId() { return id; }
-    @Override public double getJumlah() { return jumlah; }
-    @Override public String getDeskripsi() { return deskripsi; }
+    @Override
+    public double getJumlah() { return jumlah; }
+    @Override
+    public String getDeskripsi() { return deskripsi; }
     public Kategori getKategori() { return kategori; }
     public LocalDateTime getWaktu() { return waktu; }
     public String getWaktuFormatted() { return waktu.format(FORMATTER); }

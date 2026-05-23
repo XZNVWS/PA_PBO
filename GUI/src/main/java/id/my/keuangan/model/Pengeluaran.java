@@ -4,32 +4,21 @@ import java.time.LocalDateTime;
 
 public final class Pengeluaran extends Transaksi {
 
-    private String metodePembayaran;
-    private String catatan;
-
-    // Untuk GUI baru
-    public Pengeluaran(double jumlah, String deskripsi, Kategori kategori, String metodePembayaran) {
+    public Pengeluaran(double jumlah, String deskripsi, Kategori kategori) {
         super(jumlah, deskripsi, kategori);
-        setMetodePembayaran(metodePembayaran);
-        this.catatan = "";
     }
 
-    // Untuk Load dari DB
-    public Pengeluaran(String id, double jumlah, String deskripsi, Kategori kategori, LocalDateTime waktu, String metodePembayaran, String catatan) {
+    public Pengeluaran(String id, double jumlah, String deskripsi, Kategori kategori, LocalDateTime waktu) {
         super(id, jumlah, deskripsi, kategori, waktu);
-        setMetodePembayaran(metodePembayaran);
-        setCatatan(catatan);
     }
 
-    public String getMetodePembayaran() { return metodePembayaran; }
-    public String getCatatan() { return catatan; }
-
-    public void setMetodePembayaran(String metodePembayaran) {
-        this.metodePembayaran = (metodePembayaran == null || metodePembayaran.isBlank()) ? "Tunai" : metodePembayaran.trim();
+    @Override
+    public double getDampakSaldo() {
+        return -getJumlah();
     }
 
-    public void setCatatan(String catatan) { this.catatan = (catatan != null) ? catatan.trim() : ""; }
-
-    @Override public double getDampakSaldo() { return -getJumlah(); } // Penanda (-)
-    @Override public String getTipe() { return "PENGELUARAN"; }
+    @Override
+    public String getTipe() {
+        return "PENGELUARAN";
+    }
 }

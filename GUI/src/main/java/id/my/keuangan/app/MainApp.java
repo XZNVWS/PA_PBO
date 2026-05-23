@@ -6,29 +6,27 @@ import id.my.keuangan.model.Kategori;
 import id.my.keuangan.model.Pemasukan;
 import id.my.keuangan.model.Pengeluaran;
 
-import java.time.LocalDateTime; // Ganti dari LocalDate ke LocalDateTime
-import java.time.Month;
+import java.time.LocalDateTime;
+
 
 public class MainApp {
 
     public static void main(String[] args) {
 
         System.out.println("==============================================");
-        System.out.println("   SISTEM KEUANGAN PRIBADI — Demo OOP M2-4  ");
+        System.out.println("   SISTEM KEUANGAN PRIBADI — DEMO OOP M2-4  ");
         System.out.println("==============================================");
         System.out.println();
 
         TransaksiManager manager  = new TransaksiManager();
         LaporanManager   laporan  = new LaporanManager(manager);
 
-        // Perbaikan: Menggunakan LocalDateTime.of(tahun, bulan, tanggal, jam, menit)
         Pemasukan gaji = new Pemasukan(
                 "TX001",
                 8500000,
                 "Gaji Bulan Mei",
                 Kategori.GAJI,
-                LocalDateTime.of(2025, 5, 1, 0, 0),
-                "PT. Maju Bersama"
+                LocalDateTime.of(2025, 5, 1, 0, 0)
         );
 
         Pemasukan freelance = new Pemasukan(
@@ -36,8 +34,7 @@ public class MainApp {
                 2000000,
                 "Desain Logo Client",
                 Kategori.FREELANCE,
-                LocalDateTime.of(2025, 5, 10, 10, 30),
-                "Sdr. Budi"
+                LocalDateTime.of(2025, 5, 10, 10, 30)
         );
 
         Pengeluaran makan = new Pengeluaran(
@@ -45,9 +42,7 @@ public class MainApp {
                 45000,
                 "Makan Siang Padang",
                 Kategori.MAKANAN,
-                LocalDateTime.of(2025, 5, 12, 12, 15),
-                "Dompet Digital",
-                "Makan bersama tim"
+                LocalDateTime.of(2025, 5, 12, 12, 15)
         );
 
         Pengeluaran transportasi = new Pengeluaran(
@@ -55,9 +50,7 @@ public class MainApp {
                 120000,
                 "Bensin & Tol",
                 Kategori.TRANSPORTASI,
-                LocalDateTime.of(2025, 5, 15, 8, 0),
-                "Tunai",
-                "Perjalanan dinas"
+                LocalDateTime.of(2025, 5, 15, 8, 0)
         );
 
         Pengeluaran tagihan = new Pengeluaran(
@@ -65,9 +58,7 @@ public class MainApp {
                 350000,
                 "Tagihan Listrik Rumah",
                 Kategori.TAGIHAN,
-                LocalDateTime.of(2025, 5, 5, 19, 45),
-                "Transfer Bank",
-                "Bulan April"
+                LocalDateTime.of(2025, 5, 5, 19, 45)
         );
 
         System.out.println(" Menambahkan transaksi ");
@@ -83,7 +74,6 @@ public class MainApp {
         tagihan.tampilkanDetail();
 
         System.out.println();
-        // Memanggil teks ringkasan dari laporanManager
         System.out.println(laporan.generateRingkasanTeks());
 
         System.out.println(laporan.tampilkanPengeluaranPerKategori());
