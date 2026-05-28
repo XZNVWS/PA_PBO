@@ -1,8 +1,0 @@
-id\my\keuangan\manager\LaporanManager.class
-id\my\keuangan\manager\TransaksiManager.class
-id\my\keuangan\model\Transaksi.class
-id\my\keuangan\model\Pemasukan.class
-id\my\keuangan\model\ITransaksiable.class
-id\my\keuangan\app\MainApp.class
-id\my\keuangan\model\Pengeluaran.class
-id\my\keuangan\model\Kategori.class
